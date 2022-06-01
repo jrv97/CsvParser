@@ -19,23 +19,11 @@ public class CsvReader : IEnumerator, IEnumerable
     public string[] GetColumnAt(int columnIndex) =>
         (from rowIndex in Enumerable.Range(0, GetLength(0)) select Grid[rowIndex][columnIndex]).ToArray(); // O(n)
 
-    public IEnumerable<string[]> Rows
-    {
-        get // O(n)
-        {
-            foreach (var row in Grid)
-                yield return row;
-        }
-    }
+    public IEnumerable<string[]> Rows =>
+        from row in Grid select row;
 
-    public IEnumerable<string[]> Columns
-    {
-        get // O(n)
-        {
-            var cols = from colIndex in Enumerable.Range(0, GetLength(1)) select GetColumnAt(colIndex);
-            return cols;
-        }
-    }
+    public IEnumerable<string[]> Columns =>
+        from colIndex in Enumerable.Range(0, GetLength(1)) select GetColumnAt(colIndex);
 
     public int GetLength(int index) => // O(1)
         index switch

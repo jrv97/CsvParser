@@ -20,12 +20,20 @@ namespace Tests
             for (int i = 0; i < csv.GetLength(0); i++)
                 for (int j = 0; j < csv.GetLength(1); j++)
                     csv[i, j].Should().BeEquivalentTo(lines.ElementAt(i)[j]);
-            // test get rows
+            // test get rows methods
             for (int i = 0; i < lines.Count; i++)
                 lines.ElementAt(i).Should().BeEquivalentTo(csv.GetRowAt(i));
-            // test get cols
+            foreach (var rows in Enumerable.Zip(csv.Rows, lines))
+                rows.First.Should().BeEquivalentTo(rows.Second);
+            // test get cols methods
             for (int j = 0; j < lines.ElementAt(0).Length; j++)
                 lines.Select(line => line[j]).ToArray().Should().BeEquivalentTo(csv.GetColumnAt(j));
+            foreach (var cols in Enumerable.Zip(csv.Columns, from j in Enumerable.Range(0, csv.GetLength(1)) select lines.Select(line => line[j])))
+                cols.First.Should().BeEquivalentTo(cols.Second);
         }
+
+        void PrintEnumerator<T>(IEnumerable<T> list) =>
+            Console.WriteLine($"[{string.Join(", ", list.Select(x => x.ToString()))}]");
+
     }
 }

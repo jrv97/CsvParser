@@ -19,16 +19,22 @@ public class CsvReader : IEnumerator, IEnumerable
     public string[] GetColumnAt(int columnIndex) =>
         (from rowIndex in Enumerable.Range(0, GetLength(0)) select Grid[rowIndex][columnIndex]).ToArray(); // O(n)
 
-    public IEnumerable<string[]> GetRows() // O(n)
+    public IEnumerable<string[]> Rows
     {
-        foreach (var row in Grid)
-            yield return row;
+        get // O(n)
+        {
+            foreach (var row in Grid)
+                yield return row;
+        }
     }
 
-    public IEnumerable<string[]> GetColumns() // O(n)
+    public IEnumerable<string[]> Columns
     {
-        var cols = from colIndex in Enumerable.Range(0, GetLength(1)) select GetColumnAt(colIndex);
-        return cols;
+        get // O(n)
+        {
+            var cols = from colIndex in Enumerable.Range(0, GetLength(1)) select GetColumnAt(colIndex);
+            return cols;
+        }
     }
 
     public int GetLength(int index) => // O(1)
@@ -38,9 +44,6 @@ public class CsvReader : IEnumerator, IEnumerable
             1 => Grid[0].Length,
             _ => throw new IndexOutOfRangeException(),
         };
-
-    void PrintEnumerator<T>(IEnumerable<T> list) =>
-        Console.WriteLine($"[{string.Join(", ", list.Select(x => x.ToString()))}]");
 
     #region IEnumerable and IEnumerator methods
     private int Index = -1;

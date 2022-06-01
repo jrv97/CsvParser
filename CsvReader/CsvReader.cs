@@ -4,25 +4,25 @@ public class CsvReader : IEnumerator, IEnumerable
 {
     public string[][] Grid { get; private set; }
 
-    public CsvReader(string pathToCsv, char separator = ',') =>
-        Grid = File.ReadLines(pathToCsv).Select(x => x.Split(separator)).ToArray(); // O(n^2) but we'll only do this once
+    public CsvReader(string pathToCsv, char separator = ',') => // O(n^2) but we'll only do this once, where n = max(csvFile.Lenght, csvFile.Width)
+        Grid = File.ReadLines(pathToCsv).Select(x => x.Split(separator)).ToArray();
 
-    public string this[int rowIndex, int columnIndex] =>
-        Grid[rowIndex][columnIndex]; // O(1)
+    public string this[int rowIndex, int columnIndex] => // O(1)
+        Grid[rowIndex][columnIndex];
 
-    public void Set(int rowIndex, int columnIndex, string value) =>
-        Grid[rowIndex][columnIndex] = value; // O(1)
+    public void Set(int rowIndex, int columnIndex, string value) => // O(1)
+        Grid[rowIndex][columnIndex] = value;
 
-    public string[] GetRowAt(int rowIndex) =>
-        Grid[rowIndex]; // O(1)
+    public string[] GetRowAt(int rowIndex) => // O(1)
+        Grid[rowIndex];
 
-    public string[] GetColumnAt(int columnIndex) =>
-        (from rowIndex in Enumerable.Range(0, GetLength(0)) select Grid[rowIndex][columnIndex]).ToArray(); // O(n)
+    public string[] GetColumnAt(int columnIndex) => // O(n)
+        (from rowIndex in Enumerable.Range(0, GetLength(0)) select Grid[rowIndex][columnIndex]).ToArray();
 
-    public IEnumerable<string[]> Rows =>
+    public IEnumerable<string[]> Rows => // O(n)
         from row in Grid select row;
 
-    public IEnumerable<string[]> Columns =>
+    public IEnumerable<string[]> Columns => // O(n)
         from colIndex in Enumerable.Range(0, GetLength(1)) select GetColumnAt(colIndex);
 
     public int GetLength(int index) => // O(1)

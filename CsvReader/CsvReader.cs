@@ -22,7 +22,7 @@ public class CsvReader : IEnumerator, IEnumerable
     public IEnumerable<string[]> Rows => // O(n)
         from row in Grid select row;
 
-    public IEnumerable<string[]> Columns => // O(n)
+    public IEnumerable<string[]> Columns => // O(n^2)
         from colIndex in Enumerable.Range(0, GetLength(1)) select GetColumnAt(colIndex);
 
     public int GetLength(int index) => // O(1)
